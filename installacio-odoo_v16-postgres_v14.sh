@@ -57,13 +57,21 @@ function generate_random_password {
   echo "$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-' < /dev/urandom | head -c 16)"
 }
 
-# Funció per demanar dades obligatòries
+# Funció per demanar dades obligatòries amb o sense valor per defecte
 function prompt_required {
   local prompt_text=$1
   local default_value=$2
-  read -p "$prompt_text: ($default_value) " input_value
+
+  # Si hi ha un valor per defecte, mostrar-lo
+  if [ -z "$default_value" ]; then
+    read -p "$prompt_text: " input_value
+  else
+    read -p "$prompt_text: ($default_value) " input_value
+  fi
+
   echo ${input_value:-$default_value}
 }
+
 
 # Funció per demanar dades amb validació "s/n", amb resposta per defecte a "s"
 function prompt_yes_no {
