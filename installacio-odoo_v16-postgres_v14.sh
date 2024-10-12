@@ -270,7 +270,6 @@ function mostrar_valors {
 }
 
 # Confirmar els valors abans de continuar
-echo
 mostrar_valors
 
 echo
