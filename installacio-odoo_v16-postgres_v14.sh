@@ -114,7 +114,7 @@ admin_password=$(prompt_required "Introdueix la contrasenya de l'administrador" 
 
 # Demanar idioma i país amb valors per defecte
 admin_language=$(prompt_required "Introdueix l'idioma" "Català")  # Idioma per defecte Català
-admin_country=$(prompt_reqired "Introdueix el país" "Spain")     # País per defecte Spain
+admin_country=$(prompt_required "Introdueix el país" "Spain")     # País per defecte Spain
 
 install_demo_data=$(prompt_yes_no "Vols instal·lar dades de mostra? (s/n)" "n")  # Dades de mostra per defecte NO
 
