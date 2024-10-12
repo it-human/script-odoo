@@ -178,10 +178,10 @@ install_all_modules=${install_all_modules:-s}
 
 if [[ "$install_all_modules" == "s" || "$install_all_modules" == "S" ]]; then
   # Si l'usuari diu 's', instal·la tots els mòduls per defecte
+    echo "Tots els mòduls predeterminats seleccionats"
   for module in "${default_modules[@]}"; do
     module_name=$(echo $module | cut -d' ' -f1)
     selected_default_modules+=("$module_name")
-    echo "Tots els mòduls predeterminats seleccionats"
   done
 else
   # Si l'usuari diu 'n', mostrar un per un
@@ -203,10 +203,10 @@ install_all_tools=${install_all_tools:-s}
 
 if [[ "$install_all_tools" == "s" || "$install_all_tools" == "S" ]]; then
   # Si l'usuari diu 's', instal·la tots els Server Tools per defecte
+    echo "Tots els Server Tools predeterminats seleccionats"
   for tool in "${server_tools_modules[@]}"; do
     tool_name=$(echo $tool | cut -d' ' -f1)
     selected_server_tools+=("$tool_name")
-    echo "Tots els Server Tools predeterminats seleccionats"
   done
 else
   # Si l'usuari diu 'n', mostrar un per un
