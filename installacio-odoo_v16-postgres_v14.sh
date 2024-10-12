@@ -43,7 +43,7 @@
 # 9. **Creació del servei d'Odoo**:
 #    - Configura Odoo com un servei del sistema mitjançant `systemd`, per assegurar que s'executa automàticament.
 #
-# 10. **Configuració de Nginx**:
+# 10. **Configuració de Nginx**:52.47.161.50
 #    - Instal·la Nginx i el configura com a servidor intermediari que redirigeix les peticions HTTP a Odoo.
 #
 # 11. **Instal·lació automàtica dels mòduls seleccionats**:
@@ -87,6 +87,8 @@ function prompt_yes_no {
 }
 
 # Demanar el nom de la instància abans de tot
+echo "Introduïu les dades del voatre Odoo"
+echo 
 instance_name=$(prompt_required "Introdueix el nom de la instància de Lightsail")
 
 # Generar valors per defecte per la base de dades i l'usuari basat en el nom de la instància
@@ -173,7 +175,7 @@ selected_default_modules=()
 selected_server_tools=()
 
 # Pregunta si es volen instal·lar tots els mòduls per defecte
-
+echo 
 read -p 'Vols instal·lar tots els mòduls per defecte? (s/n): (s) ' install_all_modules
 install_all_modules=${install_all_modules:-s}
 
@@ -199,6 +201,7 @@ else
 fi
 
 # Pregunta si es volen instal·lar tots els Server Tools per defecte
+echo 
 read -p 'Vols instal·lar tots els Server Tools per defecte? (s/n): (s) ' install_all_tools
 install_all_tools=${install_all_tools:-s}
 
@@ -224,18 +227,19 @@ else
 fi
 
 # Confirmació final dels mòduls seleccionats
+echo 
 echo "Mòduls seleccionats per a la instal·lació:"
 for module in "${selected_default_modules[@]}"; do
   echo "- $module"
 done
 
-echo ""
+echo 
 echo "Server Tools seleccionats per a la instal·lació:"
 for tool in "${selected_server_tools[@]}"; do
   echo "- $tool"
 done
 
-
+echo 
 read -p 'Vols continuar amb aquests mòduls seleccionats? (s/n) (s): ' confirm_modules
 confirm_modules=${confirm_modules:-s}
 if [[ $confirm_modules != "s" ]]; then
@@ -265,39 +269,47 @@ function mostrar_valors {
 }
 
 # Confirmar els valors abans de continuar
+echo
 mostrar_valors
 
-read -p 'Vols continuar amb aquests valors? (s/n): (s) ' confirm
+echo
+read -p 'Vols continuar la instal·lació amb aquests valors? (s/n): (s) ' confirm
 if [[ $confirm != "s" ]]; then
   echo "Instal·lació cancel·lada."
   exit 1
 fi
 
 # Actualitzar el servidor
+echo 
 echo "Actualitzant el servidor..."
 sudo apt update -y && sudo apt upgrade -y
 
 # Instal·lació de seguretat SSH i Fail2ban
+echo 
 echo "Instal·lant seguretat SSH i Fail2ban..."
 sudo apt-get install openssh-server fail2ban -y
 
 # Instal·lació de llibreries necessàries
+echo 
 echo "Instal·lant llibreries necessàries..."
 sudo apt install vim curl wget gpg git gnupg2 software-properties-common apt-transport-https lsb-release ca-certificates -y
 sudo apt install build-essential wget git python3 python3-pip python3-dev python3-venv python3-wheel libfreetype6-dev libxml2-dev libzip-dev libsasl2-dev python3-setuptools libjpeg-dev zlib1g-dev libpq-dev libxslt1-dev libldap2-dev libtiff5-dev libopenjp2-7-dev -y
 
 # Instal·lació de Node.js i NPM
+echo 
 echo "Instal·lant Node.js i NPM..."
 sudo apt install nodejs npm node-less xfonts-75dpi xfonts-base fontconfig -y
 sudo npm install -g rtlcss
 
 # Instal·lació de Wkhtmltopdf
+echo 
 echo "Instal·lant Wkhtmltopdf..."
 wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
 sudo dpkg -i wkhtmltox_0.12.6.1-2.jammy_amd64.deb
 sudo apt-get install -f -y
 
 # Instal·lació de PostgreSQL 14
+echo 
 echo "Instal·lant PostgreSQL 14..."
 curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
 echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
@@ -305,31 +317,37 @@ sudo apt update
 sudo apt -y install postgresql-14 postgresql-client-14
 
 # Creació de la base de dades i usuari PostgreSQL per Odoo
+echo 
 echo "Creant base de dades i usuari PostgreSQL per Odoo..."
 sudo su - postgres -c "psql -c \"CREATE DATABASE $db_name;\""
 sudo su - postgres -c "createuser -p 5432 -s $db_user"
 sudo su - postgres -c "psql -c \"ALTER USER $db_user WITH PASSWORD '$db_password';\""
 
 # Configurar autenticació PostgreSQL
+echo 
 echo "Configurant autenticació PostgreSQL..."
 sudo bash -c "echo 'local   all             all                                     md5' >> /etc/postgresql/14/main/pg_hba.conf"
 sudo systemctl restart postgresql
 
 # Creació de l'usuari Odoo
+echo 
 echo "Creant usuari Odoo al sistema..."
 sudo adduser --system --group --home=/opt/odoo --shell=/bin/bash odoo
 
 # Clonar el repositori Odoo 16
+echo 
 echo "Clonant el repositori Odoo 16..."
 sudo su - odoo -c "git clone https://github.com/odoo/odoo.git --depth 1 --branch 16.0 --single-branch /opt/odoo/odoo-server"
 
 # Crear entorn virtual de Python
+echo 
 echo "Creant entorn virtual de Python..."
 sudo su - odoo -c "python3 -m venv /opt/odoo/odoo-server/venv"
 sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/pip install wheel"
 sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/pip install -r /opt/odoo/odoo-server/requirements.txt"
 
 # Crear carpetes separades per cada mòdul dins d'addons i copiar els arxius
+echo 
 echo "Creant carpetes per a cada mòdul dins d'addons..."
 for module in "${selected_default_modules[@]}"; do
   sudo mkdir -p /opt/odoo/odoo-server/addons/$module
@@ -340,12 +358,14 @@ for module in "${selected_default_modules[@]}"; do
 done
 
 # Crear carpetes per Server Tools dins de server-tools
+echo 
 echo "Creant carpetes per als Server Tools dins server-tools..."
 for tool in "${selected_server_tools[@]}"; do
   sudo mkdir -p /opt/odoo/odoo-server/server-tools/$tool
   echo "Carpeta creada per a $tool dins /opt/odoo/odoo-server/server-tools"
 done
 
+# echo 
 # Exemple per clonar un mòdul de tercers dins custom_addons:
 # Substitueix "third_party_module" pel nom del mòdul de tercers que vulguis clonar.
 # sudo mkdir -p /opt/odoo/odoo-server/custom_addons/third_party_module
@@ -353,6 +373,7 @@ done
 # Nota: Substitueix "third_party_module" pel nom correcte del mòdul de tercers.
 
 # Crear directori de logs
+echo 
 echo "Creant directori de logs..."
 sudo mkdir /var/log/odoo
 sudo touch /var/log/odoo/odoo-server.log
@@ -360,6 +381,7 @@ sudo chown odoo:odoo /var/log/odoo -R
 sudo chmod 777 /var/log/odoo
 
 # Crear fitxer de configuració d'Odoo
+echo 
 echo "Creant fitxer de configuració d'Odoo..."
 sudo bash -c "cat > /etc/odoo.conf" <<EOL
 [options]
@@ -384,6 +406,7 @@ EOL
 sudo chown odoo:odoo /etc/odoo.conf
 
 # Crear servei d'Odoo
+echo 
 echo "Creant servei d'Odoo..."
 sudo bash -c "cat > /etc/systemd/system/odoo-server.service" <<EOL
 [Unit]
@@ -405,16 +428,19 @@ WantedBy=multi-user.target
 EOL
 
 # Iniciar i habilitar el servei
+echo 
 echo "Iniciant i habilitant el servei d'Odoo..."
 sudo systemctl daemon-reload
 sudo systemctl start odoo-server
 sudo systemctl enable odoo-server
 
 # Instal·lació de Nginx
+echo 
 echo "Instal·lant Nginx..."
 sudo apt install nginx -y
 
 # Configuració de Nginx
+echo 
 echo "Configurant Nginx per Odoo..."
 sudo bash -c "cat > /etc/nginx/sites-available/$custom_domain" <<EOL
 upstream odoo16 {
@@ -439,6 +465,7 @@ server {
 EOL
 
 # Activar configuració Nginx
+echo 
 echo "Activant configuració Nginx..."
 sudo ln -s /etc/nginx/sites-available/$custom_domain /etc/nginx/sites-enabled/
 sudo nginx -t
@@ -446,6 +473,7 @@ sudo systemctl restart nginx
 
 # Mostrar les variables i el missatge final
 mostrar_valors
+echo 
 echo "Instal·lació d'Odoo completada correctament!"
 echo
 echo "Creeu el següent registre al Keeweb:"
@@ -460,4 +488,3 @@ echo "Correu electrònic de l'administrador: $admin_email"
 echo "Contrasenya de l'administrador: $admin_password"
 echo
 echo "Accedeix a Odoo mitjançant el domini: http://$custom_domain o http://$static_ip:8069"
-
