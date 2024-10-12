@@ -178,10 +178,10 @@ install_all_modules=${install_all_modules:-s}
 
 if [[ "$install_all_modules" == "s" || "$install_all_modules" == "S" ]]; then
   # Si l'usuari diu 's', instal·la tots els mòduls per defecte
-  echo "Instal·lant tots els mòduls predeterminats..."
   for module in "${default_modules[@]}"; do
     module_name=$(echo $module | cut -d' ' -f1)
     selected_default_modules+=("$module_name")
+    echo "Tots els mòduls predeterminats seleccionats"
   done
 else
   # Si l'usuari diu 'n', mostrar un per un
@@ -192,6 +192,7 @@ else
     if [[ "$choice" == "s" || "$choice" == "S" ]]; then
       module_name=$(echo $module | cut -d' ' -f1)
       selected_default_modules+=("$module_name")
+      echo "Mòdul $module_name seleccionat"
     fi
   done
 fi
@@ -202,10 +203,10 @@ install_all_tools=${install_all_tools:-s}
 
 if [[ "$install_all_tools" == "s" || "$install_all_tools" == "S" ]]; then
   # Si l'usuari diu 's', instal·la tots els Server Tools per defecte
-  echo "Instal·lant tots els Server Tools predeterminats..."
   for tool in "${server_tools_modules[@]}"; do
     tool_name=$(echo $tool | cut -d' ' -f1)
     selected_server_tools+=("$tool_name")
+    echo "Tots els Server Tools predeterminats seleccionats"
   done
 else
   # Si l'usuari diu 'n', mostrar un per un
@@ -216,6 +217,7 @@ else
     if [[ "$choice" == "s" || "$choice" == "S" ]]; then
       tool_name=$(echo $tool | cut -d' ' -f1)
       selected_server_tools+=("$tool_name")
+      echo "Server Tool $tool_name seleccionat"
     fi
   done
 fi
@@ -233,7 +235,7 @@ for tool in "${selected_server_tools[@]}"; do
 done
 
 
-read -p "Vols continuar amb aquests mòduls seleccionats? (s/n) [s]: " confirm_modules
+read -p "Vols continuar amb aquests mòduls seleccionats? (s/n) (s): " confirm_modules
 confirm_modules=${confirm_modules:-s}
 if [[ $confirm_modules != "s" ]]; then
   echo "Instal·lació cancel·lada."
@@ -264,7 +266,7 @@ function mostrar_valors {
 # Confirmar els valors abans de continuar
 mostrar_valors
 
-read -p "Vols continuar amb aquests valors? (s/n): " confirm
+read -p "Vols continuar amb aquests valors? (s/n): (s)" confirm
 if [[ $confirm != "s" ]]; then
   echo "Instal·lació cancel·lada."
   exit 1
