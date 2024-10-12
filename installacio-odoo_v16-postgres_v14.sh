@@ -172,7 +172,8 @@ selected_default_modules=()
 selected_server_tools=()
 
 # Pregunta si es volen instal·lar tots els mòduls per defecte
-read -p "Vols instal·lar tots els mòduls per defecte? (s/n): " install_all_modules
+
+read -p "Vols instal·lar tots els mòduls per defecte? (s/n): (s)" install_all_modules
 install_all_modules=${install_all_modules:-s}
 
 if [[ "$install_all_modules" == "s" || "$install_all_modules" == "S" ]]; then
@@ -196,7 +197,7 @@ else
 fi
 
 # Pregunta si es volen instal·lar tots els Server Tools per defecte
-read -p "Vols instal·lar tots els Server Tools per defecte? (s/n): " install_all_tools
+read -p "Vols instal·lar tots els Server Tools per defecte? (s/n): (s)" install_all_tools
 install_all_tools=${install_all_tools:-s}
 
 if [[ "$install_all_tools" == "s" || "$install_all_tools" == "S" ]]; then
