@@ -118,6 +118,7 @@ admin_password=$(prompt_required "Introdueix la contrasenya de l'administrador" 
 admin_language=$(prompt_required "Introdueix l'idioma" "Català")  # Idioma per defecte Català
 admin_country=$(prompt_required "Introdueix el país" "Spain")     # País per defecte Spain
 
+echo 
 install_demo_data=$(prompt_yes_no "Vols instal·lar dades de mostra? (s/n)" "n")  # Dades de mostra per defecte NO
 
 # Convertir la resposta de "s" o "n" en booleà per la configuració
