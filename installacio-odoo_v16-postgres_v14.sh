@@ -362,7 +362,10 @@ sudo chmod 777 /var/log/odoo
 echo "Creant fitxer de configuració d'Odoo..."
 sudo bash -c "cat > /etc/odoo.conf" <<EOL
 [options]
-admin_passwd = $master_password
+instance_name = $instance_name
+static_ip = $static_ip
+port = 8069
+master_password = $master_password
 db_host = 127.0.0.1
 db_port = 5432
 db_user = $db_user
@@ -371,13 +374,11 @@ db_name = $db_name
 addons_path = /opt/odoo/odoo-server/addons,/opt/odoo/odoo-server/server-tools,/opt/odoo/odoo-server/custom_addons
 logfile = /var/log/odoo/odoo-server.log
 log_level  = debug
+admin_passwd = $admin_password
 admin_email = $admin_email
 admin_country = $admin_country
 admin_language = $admin_language
 demo_data = $demo_data
-instance_name = $instance_name
-static_ip = $static_ip
-port = 8069
 EOL
 sudo chown odoo:odoo /etc/odoo.conf
 
