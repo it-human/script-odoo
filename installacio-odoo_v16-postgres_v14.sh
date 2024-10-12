@@ -274,6 +274,8 @@ mostrar_valors
 
 echo
 read -p 'Vols continuar la instal·lació amb aquests valors? (s/n): (s) ' confirm
+confirm=${confirm:-s}  # Si l'usuari no introdueix res, assigna 's' per defecte
+
 if [[ $confirm != "s" ]]; then
   echo "Instal·lació cancel·lada."
   exit 1
