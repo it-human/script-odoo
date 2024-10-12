@@ -160,34 +160,56 @@ server_tools_modules=(
 selected_default_modules=()
 selected_server_tools=()
 
-# Selecció dels mòduls predeterminats d'Odoo
-echo "Selecciona els mòduls d'Odoo que vols instal·lar (s/n per a cadascun, 's' per defecte):"
+# Pregunta si es volen instal·lar tots els mòduls per defecte
+read -p "Vols instal·lar tots els mòduls per defecte? (s/n): " install_all_modules
+install_all_modules=${install_all_modules:-s}
 
-# Llista tots els mòduls amb 's' per defecte
-for module in "${default_modules[@]}"; do
-  read -p "$module (s/n) (s) " choice
-  choice=${choice:-s}  # 's' és per defecte
-  if [[ "$choice" == "s" || "$choice" == "S" ]]; then
-    module_name=$(echo $module | cut -d' ' -f1)  # Nom del mòdul sense descripció
-    selected_default_modules+=("$module_name")   # Afegeix el mòdul seleccionat
-  fi
-done
+if [[ "$install_all_modules" == "s" || "$install_all_modules" == "S" ]]; then
+  # Si l'usuari diu 's', instal·la tots els mòduls per defecte
+  echo "Instal·lant tots els mòduls predeterminats..."
+  for module in "${default_modules[@]}"; do
+    module_name=$(echo $module | cut -d' ' -f1)
+    selected_default_modules+=("$module_name")
+  done
+else
+  # Si l'usuari diu 'n', mostrar un per un
+  echo "Selecciona els mòduls d'Odoo que vols instal·lar (s/n, 's' per defecte per a tots):"
+  for module in "${default_modules[@]}"; do
+    read -p "$module (s/n): (s) " choice
+    choice=${choice:-s}
+    if [[ "$choice" == "s" || "$choice" == "S" ]]; then
+      module_name=$(echo $module | cut -d' ' -f1)
+      selected_default_modules+=("$module_name")
+    fi
+  done
+fi
 
-# Selecció dels Server Tools
-echo "Selecciona els Server Tools que vols instal·lar (s/n per a cadascun, 's' per defecte):"
+# Pregunta si es volen instal·lar tots els Server Tools per defecte
+read -p "Vols instal·lar tots els Server Tools per defecte? (s/n): " install_all_tools
+install_all_tools=${install_all_tools:-s}
 
-# Llista tots els Server Tools amb 's' per defecte
-for tool in "${server_tools_modules[@]}"; do
-  read -p "$tool (s/n) (s) " choice
-  choice=${choice:-s}  # 's' és per defecte
-  if [[ "$choice" == "s" || "$choice" == "S" ]]; then
-    tool_name=$(echo $tool | cut -d' ' -f1)  # Nom del tool sense descripció
-    selected_server_tools+=("$tool_name")    # Afegeix el tool seleccionat
-  fi
-done
+if [[ "$install_all_tools" == "s" || "$install_all_tools" == "S" ]]; then
+  # Si l'usuari diu 's', instal·la tots els Server Tools per defecte
+  echo "Instal·lant tots els Server Tools predeterminats..."
+  for tool in "${server_tools_modules[@]}"; do
+    tool_name=$(echo $tool | cut -d' ' -f1)
+    selected_server_tools+=("$tool_name")
+  done
+else
+  # Si l'usuari diu 'n', mostrar un per un
+  echo "Selecciona els Server Tools que vols instal·lar (s/n, 's' per defecte per a tots):"
+  for tool in "${server_tools_modules[@]}"; do
+    read -p "$tool (s/n): (s) " choice
+    choice=${choice:-s}
+    if [[ "$choice" == "s" || "$choice" == "S" ]]; then
+      tool_name=$(echo $tool | cut -d' ' -f1)
+      selected_server_tools+=("$tool_name")
+    fi
+  done
+fi
 
-# Confirmació final dels mòduls i Server Tools seleccionats
-echo "Mòduls per defecte seleccionats per a la instal·lació:"
+# Confirmació final dels mòduls seleccionats
+echo "Mòduls seleccionats per a la instal·lació:"
 for module in "${selected_default_modules[@]}"; do
   echo "- $module"
 done
@@ -197,6 +219,7 @@ echo "Server Tools seleccionats per a la instal·lació:"
 for tool in "${selected_server_tools[@]}"; do
   echo "- $tool"
 done
+
 
 read -p "Vols continuar amb aquests mòduls seleccionats? (s/n) [s]: " confirm_modules
 confirm_modules=${confirm_modules:-s}
