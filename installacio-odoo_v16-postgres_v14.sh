@@ -100,8 +100,10 @@ admin_password_default=$(generate_random_password)
 
 # Demanar la resta de paràmetres amb els valors per defecte calculats
 static_ip=$(prompt_required "Introdueix la IP estàtica de la instància")
+
 # Generar el valor per defecte del domini dinàmicament
 custom_domain_default="intranet.${instance_name}.com"
+
 custom_domain=$(prompt_required "Introdueix el nom de domini" "$custom_domain_default")
 db_name=$(prompt_required "Introdueix el nom de la base de dades" "$db_name_default")
 db_user=$(prompt_required "Introdueix el nom d'usuari de la base de dades" "$db_user_default")
