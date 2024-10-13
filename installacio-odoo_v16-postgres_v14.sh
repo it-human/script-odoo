@@ -347,38 +347,49 @@ sudo su - odoo -c "python3 -m venv /opt/odoo/odoo-server/venv"
 sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/pip install wheel"
 sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/pip install -r /opt/odoo/odoo-server/requirements.txt"
 
-# Crear carpetes separades per cada mòdul dins d'addons i copiar els arxius
+# Crear carpetes separades per a cada mòdul dins d'addons i copiar els arxius
 echo 
 echo "Creant carpetes per a cada mòdul dins d'addons..."
 for module in "${selected_default_modules[@]}"; do
   sudo mkdir -p /opt/odoo/odoo-server/addons/$module
   echo "Carpeta creada per a $module dins /opt/odoo/odoo-server/addons"
-  
-  # Comprovar si hi ha arxius per copiar i evitar errors
+
+  # Copiar els arxius de cada mòdul dins la carpeta corresponent i verificar que es copien
   if [ -d "/opt/odoo/odoo-server/odoo/addons/$module" ]; then
     sudo cp -r /opt/odoo/odoo-server/odoo/addons/$module/* /opt/odoo/odoo-server/addons/$module/
-    echo "Arxius copiats a /opt/odoo/odoo-server/addons/$module"
+    
+    # Comprovar que la carpeta té arxius
+    if [ "$(ls -A /opt/odoo/odoo-server/addons/$module)" ]; then
+      echo "Arxius copiats correctament a /opt/odoo/odoo-server/addons/$module"
+    else
+      echo "Error: No s'han copiat arxius a /opt/odoo/odoo-server/addons/$module"
+    fi
   else
-    echo "No s'han trobat arxius per a $module dins /opt/odoo/odoo-server/odoo/addons/"
+    echo "Error: No s'ha trobat el mòdul $module dins /opt/odoo/odoo-server/odoo/addons/"
   fi
 done
 
-# Crear carpetes per Server Tools dins de server-tools
+# Crear carpetes per als Server Tools dins server-tools i copiar els arxius
 echo 
 echo "Creant carpetes per als Server Tools dins server-tools..."
 for tool in "${selected_server_tools[@]}"; do
   sudo mkdir -p /opt/odoo/odoo-server/server-tools/$tool
   echo "Carpeta creada per a $tool dins /opt/odoo/odoo-server/server-tools"
-  
-  # Comprovar si hi ha arxius per copiar per als Server Tools
+
+  # Copiar els arxius de cada Server Tool dins la carpeta corresponent i verificar que es copien
   if [ -d "/opt/odoo/odoo-server/odoo/server-tools/$tool" ]; then
     sudo cp -r /opt/odoo/odoo-server/odoo/server-tools/$tool/* /opt/odoo/odoo-server/server-tools/$tool/
-    echo "Arxius copiats a /opt/odoo/odoo-server/server-tools/$tool"
+    
+    # Comprovar que la carpeta té arxius
+    if [ "$(ls -A /opt/odoo/odoo-server/server-tools/$tool)" ]; then
+      echo "Arxius copiats correctament a /opt/odoo/odoo-server/server-tools/$tool"
+    else
+      echo "Error: No s'han copiat arxius a /opt/odoo/odoo-server/server-tools/$tool"
+    fi
   else
-    echo "No s'han trobat arxius per a $tool dins /opt/odoo/odoo-server/odoo/server-tools/"
+    echo "Error: No s'ha trobat el tool $tool dins /opt/odoo/odoo-server/odoo/server-tools/"
   fi
 done
-
 
 # echo 
 # Exemple per clonar un mòdul de tercers dins custom_addons:
@@ -485,6 +496,20 @@ echo "Activant configuració Nginx..."
 sudo ln -s /etc/nginx/sites-available/$custom_domain /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
+
+# Esborrar els fitxers .deb baixats
+sudo rm -f /home/ubuntu/*.deb
+# Esborrar l'script d'instal·lació
+sudo rm -f /home/ubuntu/installacio-odoo_v16-postgres_v14.sh
+# Netejar la cache d'apt
+sudo apt-get clean
+# Eliminar paquets innecessaris
+sudo apt-get autoremove -y
+# Opcional: esborrar logs antics (si n'hi ha)
+sudo rm -f /var/log/odoo/*.log
+echo 
+echo "Instal·lació completada i fitxers temporals eliminats."
+
 
 # Mostrar les variables i el missatge final
 mostrar_valors
