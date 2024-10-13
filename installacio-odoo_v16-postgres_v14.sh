@@ -353,9 +353,14 @@ echo "Creant carpetes per a cada mòdul dins d'addons..."
 for module in "${selected_default_modules[@]}"; do
   sudo mkdir -p /opt/odoo/odoo-server/addons/$module
   echo "Carpeta creada per a $module dins /opt/odoo/odoo-server/addons"
-  # Copiar els arxius de cada mòdul dins la carpeta corresponent
-  sudo cp -r /opt/odoo/odoo-server/odoo/addons/$module/* /opt/odoo/odoo-server/addons/$module/
-  echo "Arxius copiats a /opt/odoo/odoo-server/addons/$module"
+  
+  # Comprovar si hi ha arxius per copiar i evitar errors
+  if [ -d "/opt/odoo/odoo-server/odoo/addons/$module" ]; then
+    sudo cp -r /opt/odoo/odoo-server/odoo/addons/$module/* /opt/odoo/odoo-server/addons/$module/
+    echo "Arxius copiats a /opt/odoo/odoo-server/addons/$module"
+  else
+    echo "No s'han trobat arxius per a $module dins /opt/odoo/odoo-server/odoo/addons/"
+  fi
 done
 
 # Crear carpetes per Server Tools dins de server-tools
@@ -364,7 +369,16 @@ echo "Creant carpetes per als Server Tools dins server-tools..."
 for tool in "${selected_server_tools[@]}"; do
   sudo mkdir -p /opt/odoo/odoo-server/server-tools/$tool
   echo "Carpeta creada per a $tool dins /opt/odoo/odoo-server/server-tools"
+  
+  # Comprovar si hi ha arxius per copiar per als Server Tools
+  if [ -d "/opt/odoo/odoo-server/odoo/server-tools/$tool" ]; then
+    sudo cp -r /opt/odoo/odoo-server/odoo/server-tools/$tool/* /opt/odoo/odoo-server/server-tools/$tool/
+    echo "Arxius copiats a /opt/odoo/odoo-server/server-tools/$tool"
+  else
+    echo "No s'han trobat arxius per a $tool dins /opt/odoo/odoo-server/odoo/server-tools/"
+  fi
 done
+
 
 # echo 
 # Exemple per clonar un mòdul de tercers dins custom_addons:
