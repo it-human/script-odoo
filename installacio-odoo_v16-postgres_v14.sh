@@ -498,7 +498,7 @@ sudo nginx -t
 sudo systemctl restart nginx
 
 # Esborrar els fitxers .deb baixats
-sudo rm -f /home/ubuntu/*.deb.
+sudo rm -f /home/ubuntu/*.deb
 sudo rm -f /home/ubuntu/*.deb.*
 # Esborrar l'script d'instal·lació
 sudo rm -f /home/ubuntu/installacio-odoo_v16-postgres_v14.sh
