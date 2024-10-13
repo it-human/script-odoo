@@ -248,7 +248,6 @@ if [[ $confirm_modules != "s" ]]; then
   exit 1
 fi
 
-
 # Mostrar els valors seleccionats
 function mostrar_valors {
   echo "Configuració seleccionada:"
@@ -266,7 +265,6 @@ function mostrar_valors {
   echo "  Instal·lació de dades de mostra: $demo_data"
   echo "  Mòduls per defecte seleccionats: ${selected_default_modules[*]}"
   echo "  Server Tools seleccionats: ${selected_server_tools[*]}"
-  echo
 }
 
 # Confirmar els valors abans de continuar
