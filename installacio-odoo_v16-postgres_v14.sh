@@ -91,9 +91,10 @@ echo "Introduïu les dades del voatre Odoo"
 echo 
 instance_name=$(prompt_required "Introdueix el nom de la instància de Lightsail")
 
-# Generar valors per defecte per la base de dades i l'usuari basat en el nom de la instància
-db_name_default="${instance_name}_db"
-db_user_default="${instance_name}_user"
+# Generar valors per defecte per la base de dades i l'usuari basats en el nom de la instància
+db_name_default=$(echo "${instance_name}_db" | tr '-' '_')
+db_user_default=$(echo "${instance_name}_user" | tr '-' '_')
+
 
 # Generar contrasenyes aleatòries per defecte
 master_password_default=$(generate_random_password)
