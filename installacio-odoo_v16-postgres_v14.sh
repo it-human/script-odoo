@@ -498,7 +498,8 @@ sudo nginx -t
 sudo systemctl restart nginx
 
 # Esborrar els fitxers .deb baixats
-sudo rm -f /home/ubuntu/*.deb
+sudo rm -f /home/ubuntu/*.deb.
+sudo rm -f /home/ubuntu/*.deb.*
 # Esborrar l'script d'instal·lació
 sudo rm -f /home/ubuntu/installacio-odoo_v16-postgres_v14.sh
 # Netejar la cache d'apt
@@ -508,7 +509,7 @@ sudo apt-get autoremove -y
 # Opcional: esborrar logs antics (si n'hi ha)
 sudo rm -f /var/log/odoo/*.log
 echo 
-echo "Instal·lació completada i fitxers temporals eliminats."
+echo "Fitxers temporals eliminats."
 
 
 # Mostrar les variables i el missatge final
