@@ -19,9 +19,9 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
      - 🔑 **Master Password**
      - 🔑 **Contrasenya de la base de dades**
      - 🔑 **Contrasenya de l'administrador**   
-   - **Base de dades i usuari generats automàticament** a partir del nom de la instància.
+   - **Nom de la base de dades i de l'usuari generats automàticament** a partir del nom de la instància.
    - Demana l'**idioma** (per defecte: Català) i el **país** (per defecte: Spain).
-   - Pregunta si es volen instal·lar dades de mostra (resposta per defecte: "no").
+   - Pregunta si es volen instal·lar dades de mostra (per defecte: "no").
 
 ### 🔢 2️⃣ Selecció de mòduls:
    - Permet seleccionar mòduls predeterminats d'Odoo (CRM, Comptabilitat, Inventari, etc.).
