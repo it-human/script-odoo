@@ -15,7 +15,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
 
 ### 🔢 1️⃣ Recollida de dades:
    - Demana la informació necessària per configurar Odoo i la base de dades: IP estàtica, contrasenyes, correu electrònic, etc.
-   - **Genera contrasenyes aleatòries** de 16 caràcters (majúscules, mninúscules, números i caràcters especials per a:
+   - **Genera contrasenyes aleatòries** de 16 caràcters (majúscules, minúscules, números i caràcters especials per a:
      - 🔑 **Master Password**
      - 🔑 **Contrasenya de la base de dades**
      - 🔑 **Contrasenya de l'administrador**   
