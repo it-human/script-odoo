@@ -188,7 +188,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
    - Inicia sessió al perfil de **Siteground** de Human CTA.
 
 ### 🔢 2️⃣ **Crear un subdomini**:
-   - A la secció del teu projecte web, afegeix un nou subdomini corresponent a la URL d'Odoo, com per exemple `intranet.<el teu domoni>`.
+   - A la secció del teu projecte web, afegeix un nou subdomini corresponent a la URL d'Odoo, com per exemple `intranet.<el teu domini>`
 
 ### 🔢 3️⃣ **Configuració dels registres DNS**:
    - Per assegurar que el subdomini apunta correctament a la instància d'Odoo, afegeix un registre DNS tipus **A** que apunti l'IP estàtica de la teva instància d'Odoo al subdomini que has creat.
