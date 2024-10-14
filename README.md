@@ -3,13 +3,11 @@
 **Script creat per a la instal·lació automàtica d'Odoo v.16 sobre PostgreSQL v.14**
 <br><br>  
 
-
 ## 📑 Explicació de l'script:
 
 Aquest script automatitza la instal·lació d'Odoo 16 amb PostgreSQL 14 en una instància d'AWS (com Lightsail). Inclou 
 configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment mòduls de tercers i Server Tools.
 <br><br>
-
 
 ## 📋 Funcionalitats principals de l'script:
 
@@ -84,7 +82,6 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
    - Posa el nom a la IP estàtica amb al forma `staticIp-odoo-Human_CTA`, `staticIp-odoo-proves`
 <br><br>
 
-
 ## 🔑 Gestió de claus SSH
 
 ### Generar les claus SSH locals
@@ -120,8 +117,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
      ```bash
      chmod 400 /path/a/la/teva/clau_privada.pem
      ```
-<br><br>
-
+<br>
 
 ## 🛠️ Connexió a la instància Odoo via SSH utilitzant Visual Studio Code:
 
@@ -139,7 +135,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
      ```bash
      chmod 400 /path/al/teu/arxiu.pem
      ```
-<br><br>
+<br>
 
 ## ⬇️ Baixar i executar l'script:
 
@@ -160,7 +156,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
      ```bash
      ./installacio-odoo_v16-postgres_v14.sh
      ```
-<br><br>
+<br>
 
 ## 🌐 Accés a l'Odoo creat:
 
@@ -184,7 +180,6 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
    - **Demo Data**: Si vols instal·lar dades de prova per fer tests, marca aquesta opció.
 <br><br>
 
-
 ## 🌍 Configuració de DNS i subdomini a Siteground:
 
 ### 🔢 1️⃣ **Accedir al perfil de Siteground**:
@@ -205,18 +200,18 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
    - Els registres DNS poden trigar fins a 48 hores per propagar-se correctament. Després d'aquest període, hauràs de poder accedir a la teva instància d'Odoo utilitzant el subdomini que has creat.
 <br><br>
 
-
 ## 🔐 Recomanacions de seguretat:
 
 És **molt important** guardar totes les credencials generades durant el procés d'instal·lació, com la **Master Password**, la **contrasenya de l'administrador** i altres contrasenyes crítiques. Recomanem utilitzar un gestor de contrasenyes com **Keeweb** o altres eines similars per emmagatzemar de forma segura aquestes credencials.
 - **Seguretat de les claus**: Mantingues la teva clau privada segura i mai la comparteixis amb ningú. Utilitza només la clau pública per autenticar-te.
 - **Backup de les claus**: Guardeu les claus SSH al **Keeweb** juntament amb al resta de dades sensibles.
 - **Actualitzacions de seguretat**: No oblidis executar periòdicament `sudo apt update && sudo apt upgrade` per mantenir el sistema actualitzat.
+<br><br>
 
 ## 🔗 Exemple d'accés final a Odoo:
 
-Un cop la configuració dels DNS i el subdomini estigui completa, podràs accedir a la teva instància d'Odoo utilitzant el subdomini que has configurat. Per exemple, si has creat el subdomini `intranet.<el teu domini>.com`, podràs accedir a la instància mitjançant:
+Un cop la configuració dels DNS i el subdomini estigui completa, podràs accedir a la teva instància d'Odoo utilitzant el subdomini que has configurat. Per exemple, si has creat el subdomini `intranet.<el teu domini>`, podràs accedir a la instància mitjançant:
 
 ```bash
-https://intranet.<el teu domini>.com:8069
+https://intranet.<el teu domini>:8069
 ```
