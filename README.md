@@ -1,6 +1,8 @@
 # 📦 Script per la instal·lació d'Odoo 16
 
-**Script creat per a la instal·lació automàtica d'Odoo v.16 sobre PostgreSQL v.14**
+**Script creat per a la instal·lació automàtica d'Odoo v.16 sobre PostgreSQL v.14
+<br>
+💾 "installacio-odoo_v16-postgres_v14.sh"**
 <br><br>  
 
 ## 📑 Explicació de l'script:
