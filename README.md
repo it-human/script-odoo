@@ -3,11 +3,13 @@
 **Script creat per a la instal·lació automàtica d'Odoo v.16 sobre PostgreSQL v.14**
 <br><br>  
 
+
 ## 📑 Explicació de l'script:
 
 Aquest script automatitza la instal·lació d'Odoo 16 amb PostgreSQL 14 en una instància d'AWS (com Lightsail). Inclou 
 configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment mòduls de tercers i Server Tools.
 <br><br>
+
 
 ## 📋 Funcionalitats principals de l'script:
 
@@ -82,6 +84,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
    - Posa el nom a la IP estàtica amb al forma `staticIp-odoo-Human_CTA`, `staticIp-odoo-proves`
 <br><br>
 
+
 ## 🔑 Gestió de claus SSH
 
 ### Generar les claus SSH locals
@@ -118,6 +121,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
      chmod 400 /path/a/la/teva/clau_privada.pem
      ```
 <br><br>
+
 
 ## 🛠️ Connexió a la instància Odoo via SSH utilitzant Visual Studio Code:
 
@@ -158,7 +162,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
      ```
 <br><br>
 
-## 🌐 Accés a Odoo creat:
+## 🌐 Accés a l'Odoo creat:
 
 ### Configuració de la base de dades:
 
@@ -180,6 +184,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
    - **Demo Data**: Si vols instal·lar dades de prova per fer tests, marca aquesta opció.
 <br><br>
 
+
 ## 🌍 Configuració de DNS i subdomini a Siteground:
 
 ### 🔢 1️⃣ **Accedir al perfil de Siteground**:
@@ -199,6 +204,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
 ### 🔢 4️⃣ **Esperar la propagació**:
    - Els registres DNS poden trigar fins a 48 hores per propagar-se correctament. Després d'aquest període, hauràs de poder accedir a la teva instància d'Odoo utilitzant el subdomini que has creat.
 <br><br>
+
 
 ## 🔐 Recomanacions de seguretat:
 
