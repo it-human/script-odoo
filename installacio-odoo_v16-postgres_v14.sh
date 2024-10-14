@@ -1,60 +1,6 @@
-#!/bin/bash
-
-# Aquest script automatitza la instal·lació d'Odoo 16 amb PostgreSQL 14 en una instància d'AWS (com Lightsail).
-# Inclou configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment mòduls de tercers i Server Tools.
-#
-# Explicació detallada del que fa l'script:
-#
-# 1. **Recollida de dades**:
-#    - Demana la informació necessària per configurar Odoo i la base de dades: IP estàtica, contrasenyes, correu electrònic, etc.
-#    - Genera contrasenyes aleatòries de 16 caràcters per a:
-#        - **Master Password**
-#        - **Contrasenya de la base de dades**
-#        - **Contrasenya de l'administrador**
-#    - Demana a l'usuari l'**idioma** i el **país** amb valors per defecte preestablerts (Català i Spain) i posa per defecte el correu de l'administrador 'it@humancta.org'.
-
-#    - **El nom de la base de dades i l'usuari es generen automàticament a partir del nom de la instància introduïda**.
-#    - Pregunta si es volen instal·lar dades de mostra (resposta per defecte: n).
-# 
-# 2. **Selecció de mòduls**:
-#    - Mostra una llista de mòduls predeterminats d'Odoo (CRM, Comptabilitat, Inventari, etc.) i permet escollir quins es volen instal·lar (resposta per defecte: s).
-#    - Els **Server Tools** també es poden seleccionar mitjançant la mateixa opció (resposta per defecte: s).
-#
-# 3. **Instal·lació de mòduls i Server Tools**:
-#    - Crea carpetes per a cada mòdul i Server Tool seleccionat, i copia els fitxers corresponents dins les carpetes individuals dins `/opt/odoo/odoo-server/addons` i `/opt/odoo/odoo-server/addons/server-tools`.
-#
-# 4. **Actualització del servidor**:
-#    - Actualitza el sistema amb `sudo apt update -y && sudo apt upgrade -y`.
-#
-# 5. **Instal·lació de llibreries i dependències**:
-#    - Instal·la les llibreries necessàries (Python, Git, Node.js, Wkhtmltopdf) per fer funcionar Odoo.
-#
-# 6. **Instal·lació de PostgreSQL**:
-#    - Instal·la PostgreSQL 14 i crea l'usuari i base de dades necessària per Odoo.
-#
-# 7. **Creació de l'usuari Odoo**:
-#    - Crea un usuari dedicat d'Odoo per a una millor seguretat i aïllament dels processos.
-#
-# 8. **Configuració de l'arxiu `odoo.conf`**:
-#    - Configura les rutes d'addons, la base de dades, contrasenyes, **logs**, i altres opcions d'Odoo dins l'arxiu `/etc/odoo.conf`.
-#    - Els **logs** es registren a `/var/log/odoo/odoo-server.log`. El nivell de logs es pot ajustar mitjançant el paràmetre `log_level` (`debug`, `info`, `warning`, `error`).
-#    - Es pot configurar la rotació dels **logs** amb eines com `logrotate`.
-#
-# 9. **Creació del servei d'Odoo**:
-#    - Configura Odoo com un servei del sistema mitjançant `systemd`, per assegurar que s'executa automàticament.
-#
-# 10. **Configuració de Nginx**:52.47.161.50
-#    - Instal·la Nginx i el configura com a servidor intermediari que redirigeix les peticions HTTP a Odoo.
-#
-# 11. **Instal·lació automàtica dels mòduls seleccionats**:
-#    - Instal·la tots els mòduls i Server Tools seleccionats a la base de dades d'Odoo i informa si la instal·lació ha estat correcta.
-#
-# 12. **Missatge final amb dades importants i suggeriment per Keeweb**:
-#    - Mostra un missatge final amb totes les dades de configuració (IP, base de dades, contrasenyes) i recomana guardar-les en un gestor de contrasenyes com Keeweb.
-
 # Funció per generar una contrasenya aleatòria de 16 caràcters
 function generate_random_password {
-  echo "$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-' < /dev/urandom | head -c 16)"
+  echo "$(tr -dc 'A-Za-z0-9?¿¡!@#$%^&*()_+=-' < /dev/urandom | head -c 16)"
 }
 
 # Funció per demanar dades obligatòries amb o sense valor per defecte
@@ -510,7 +456,6 @@ sudo apt-get autoremove -y
 sudo rm -f /var/log/odoo/*.log
 echo 
 echo "Fitxers temporals eliminats."
-
 
 # Mostrar les variables i el missatge final
 mostrar_valors
