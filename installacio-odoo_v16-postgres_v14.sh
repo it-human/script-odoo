@@ -1,45 +1,42 @@
 #!/bin/bash
 
+#!/bin/bash
+
 # Funció per generar una contrasenya aleatòria de 16 caràcters
 function generate_random_password {
   echo "$(tr -dc 'A-Za-z0-9?¿¡!@#$%^&*()_+=-' < /dev/urandom | head -c 16)"
 }
 
-# Funció per instal·lar mòduls seleccionats a la base de dades
-install_selected_modules() {
-  local modules_to_install=("$@")
-  
-  echo -e "\e[1m\e[34mInstal·lant mòduls seleccionats...\e[0m"
-  
-  for module in "${modules_to_install[@]}"; do
-    echo -e "\e[1mInstal·lant el mòdul: $module\e[0m"
-    
-    # Executar la comanda per instal·lar el mòdul en la base de dades especificada
-    sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/python3 /opt/odoo/odoo-server/odoo-bin -d $db_name -i $module --stop-after-init"
-    
-    # Verificar si la instal·lació ha estat correcta
-    if [ $? -eq 0 ]; then
-      echo -e "\e[32mMòdul $module instal·lat correctament.\e[0m"
-    else
-      echo -e "\e[31mError: No s'ha pogut instal·lar el mòdul $module.\e[0m"
-    fi
-  done
-}
+# Funció per demanar dades obligatòries amb o sense valor per defecte
+function prompt_required {
+  local prompt_text=$1
+  local default_value=$2
 
+  # Si hi ha un valor per defecte, mostrar-lo en groc
+  if [ -z "$default_value" ]; then
+    read -p "$prompt_text: " input_value
+  else
+    read -p "$prompt_text: \e[33m($default_value)\e[0m " input_value
+  fi
+
+  echo ${input_value:-$default_value}
+}
 
 # Funció per demanar dades amb validació "s/n", amb resposta per defecte a "s"
 function prompt_yes_no {
   local prompt_text=$1
   local default_value=$2
-  read -p "$prompt_text (s/n): ($default_value) " input_value
+  read -p "$prompt_text (s/n): \e[33m($default_value)\e[0m " input_value
   input_value=${input_value:-$default_value}
   while [[ ! "$input_value" =~ ^[sSnN]$ ]]; do
-    read -p "$prompt_text (s/n): ($default_value) " input_value
+    read -p "$prompt_text (s/n): \e[33m($default_value)\e[0m " input_value
     input_value=${input_value:-$default_value}
   done
   echo "$input_value"
 }
 
+# Demanar el nom de la instància abans de tot
+echo -e "\e[1m\e[34mIntroduïu les dades del vostre Odoo\e[0m"
 # Demanar el nom de la instància abans de tot
 echo -e "\e[1m\e[34mIntroduïu les dades del vostre Odoo\e[0m"
 echo 
@@ -415,20 +412,25 @@ sudo rm -f /var/log/odoo/*.log
 echo 
 echo "Fitxers temporals eliminats."
 
-# Mostrar les variables i el missatge final
+# Mostrar els valors seleccionats
+function mostrar_valors {
+  echo -e "\e[1m\e[33mConfiguració seleccionada:\e[0m"
+  echo "  Nom de la instància de Lightsail: \e[33m$instance_name\e[0m"
+  echo "  IP estàtica de la instància: \e[33m$static_ip\e[0m"
+  echo "  Nom de domini: \e[33m$custom_domain\e[0m"
+  echo "  Master Password: \e[33m$master_password\e[0m"
+  echo "  Nom de la base de dades: \e[33m$db_name\e[0m"
+  echo "  Usuari de la base de dades: \e[33m$db_user\e[0m"
+  echo "  Contrasenya de la base de dades: \e[33m$db_password\e[0m"
+  echo "  Correu electrònic de l'administrador: \e[33m$admin_email\e[0m"
+  echo "  Contrasenya de l'administrador: \e[33m$admin_password\e[0m"
+  echo "  Idioma: \e[33m$admin_language\e[0m"
+  echo "  País: \e[33m$admin_country\e[0m"
+  echo "  Instal·lació de dades de mostra: \e[33m$demo_data\e[0m"
+  echo "  Mòduls per defecte seleccionats: \e[33m${selected_default_modules[*]}\e[0m"
+  echo "  Server Tools seleccionats: \e[33m${selected_server_tools[*]}\e[0m"
+}
+
 mostrar_valors
-echo 
-echo -e "\e[1m\e[34mInstal·lació acabada correctament!\e[0m"
-echo
-echo "Creeu el següent registre al Keeweb:"
-echo "Nom del registre: $instance_name"
-echo "Web: $custom_domain"
-echo "IP estàtica: $static_ip"
-echo "Master Password: $master_password"
-echo "Nom de la base de dades: $db_name"
-echo "Usuari de la base de dades: $db_user"
-echo "Contrasenya de la base de dades: $db_password"
-echo "Correu electrònic de l'administrador: $admin_email"
-echo "Contrasenya de l'administrador: $admin_password"
 echo
 echo "Accedeix a Odoo mitjançant el domini: https://$custom_domain o https://$static_ip:8069"
