@@ -262,12 +262,42 @@ echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" 
 sudo apt update
 sudo apt -y install postgresql-14 postgresql-client-14
 
+# Funció per comprovar i esborrar una base de dades si existeix
+function check_and_delete_db {
+  local db_name=$1
+  db_exists=$(sudo su - postgres -c "psql -tAc \"SELECT 1 FROM pg_database WHERE datname = '$db_name'\"")
+  
+  if [[ "$db_exists" == "1" ]]; then
+    echo "La base de dades $db_name ja existeix. Esborrant-la..."
+    sudo su - postgres -c "dropdb $db_name"
+  else
+    echo "La base de dades $db_name no existeix, no cal esborrar."
+  fi
+}
+
+# Funció per comprovar i esborrar un usuari de PostgreSQL si existeix
+function check_and_delete_user {
+  local db_user=$1
+  user_exists=$(sudo su - postgres -c "psql -tAc \"SELECT 1 FROM pg_roles WHERE rolname = '$db_user'\"")
+  
+  if [[ "$user_exists" == "1" ]]; then
+    echo "L'usuari $db_user ja existeix. Esborrant-lo..."
+    sudo su - postgres -c "dropuser $db_user"
+  else
+    echo "L'usuari $db_user no existeix, no cal esborrar."
+  fi
+}
+
+# Esborrar la base de dades i l'usuari si ja existeixen
+check_and_delete_db "$db_name"
+check_and_delete_user "$db_user"
+
 # Creació de la base de dades i usuari PostgreSQL per Odoo
-echo  
-echo -e "\e[1m\e[34mCreant base de dades i usuari PostgreSQL per Odoo...\e[0m"
+echo -e "\e[1m\e[34mCreant nova base de dades i usuari PostgreSQL per Odoo...\e[0m"
 sudo su - postgres -c "psql -c \"CREATE DATABASE $db_name;\""
 sudo su - postgres -c "createuser -p 5432 -s $db_user"
 sudo su - postgres -c "psql -c \"ALTER USER $db_user WITH PASSWORD '$db_password';\""
+
 
 # Creació de l'usuari Odoo
 echo  
