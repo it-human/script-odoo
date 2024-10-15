@@ -269,22 +269,30 @@ sudo su - postgres -c "psql -c \"CREATE DATABASE $db_name;\""
 sudo su - postgres -c "createuser -p 5432 -s $db_user"
 sudo su - postgres -c "psql -c \"ALTER USER $db_user WITH PASSWORD '$db_password';\""
 
-# Configurar autenticació PostgreSQL
-echo  
-echo -e "\e[1m\e[34mConfigurant autenticació PostgreSQL...\e[0m"
-sudo bash -c "echo 'local   all             all                                     md5' >> /etc/postgresql/14/main/pg_hba.conf"
-sudo systemctl restart postgresql
-
 # Creació de l'usuari Odoo
 echo  
 echo -e "\e[1m\e[34mCreant usuari Odoo al sistema...\e[0m"
 sudo adduser --system --group --home=/opt/odoo --shell=/bin/bash odoo
 
+# Creació de la base de dades i usuari PostgreSQL per Odoo
+echo  
+echo -e "\e[1m\e[34mCreant base de dades i usuari PostgreSQL per Odoo...\e[0m"
+sudo su - postgres -c "psql -c \"CREATE DATABASE $db_name;\""
+sudo su - postgres -c "createuser -p 5432 -s $db_user"
+sudo su - postgres -c "psql -c \"ALTER USER $db_user WITH PASSWORD '$db_password';\""
+
 # Creació del rol Odoo a PostgreSQL utilitzant la contrasenya de la variable $db_password
 echo  
 echo -e "\e[1m\e[34mCreant rol d'Odoo a PostgreSQL...\e[0m"
-sudo su - postgres -c "psql -c \"CREATE ROLE odoo WITH LOGIN PASSWORD '$db_password';\""
-sudo su - postgres -c "psql -c \"ALTER ROLE odoo CREATEDB;\""
+sudo su - postgres -c "psql -c \"CREATE ROLE $db_user WITH LOGIN PASSWORD '$db_password';\""
+sudo su - postgres -c "psql -c \"ALTER ROLE $db_user CREATEDB;\""
+
+# Configurar autenticació PostgreSQL
+echo  
+echo -e "\e[1m\e[34mConfigurant autenticació PostgreSQL...\e[0m"
+sudo bash -c "echo 'local   all             all                                     md5' >> /etc/postgresql/14/main/pg_hba.conf"
+sudo systemctl restart postgresql
+sleep 5  # Pausa de 5 segons per assegurar que PostgreSQL es reinicia completament
 
 # Clonar el repositori Odoo 16
 echo  
