@@ -257,10 +257,11 @@ sudo apt-get install -f -y
 # Instal·lació de PostgreSQL 14
 echo  
 echo -e "\e[1m\e[34mInstal·lant PostgreSQL 14...\e[0m"
-curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
-echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/postgresql.gpg > /dev/null
+echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null
 sudo apt update
 sudo apt -y install postgresql-14 postgresql-client-14
+
 
 # Funció per comprovar i esborrar una base de dades si existeix
 function check_and_delete_db {
