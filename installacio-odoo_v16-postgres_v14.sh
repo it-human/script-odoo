@@ -16,7 +16,7 @@ function prompt_required {
   if [ -z "$default_value" ]; then
     read -p "$prompt_text: " input_value
   else
-    read -p "$prompt_text: \e[33m($default_value)\e[0m " input_value
+    read -p "$prompt_text: ($default_value) input_value
   fi
 
   echo ${input_value:-$default_value}
@@ -26,10 +26,10 @@ function prompt_required {
 function prompt_yes_no {
   local prompt_text=$1
   local default_value=$2
-  read -p "$prompt_text (s/n): \e[33m($default_value)\e[0m " input_value
+  read -p "$prompt_text (s/n): ($default_value) input_value
   input_value=${input_value:-$default_value}
   while [[ ! "$input_value" =~ ^[sSnN]$ ]]; do
-    read -p "$prompt_text (s/n): \e[33m($default_value)\e[0m " input_value
+    read -p "$prompt_text (s/n): ($default_value) input_value
     input_value=${input_value:-$default_value}
   done
   echo "$input_value"
