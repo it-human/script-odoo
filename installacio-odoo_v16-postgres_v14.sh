@@ -1,16 +1,22 @@
 #!/bin/bash
 
+#!/bin/bash
+
+# Funció per generar una contrasenya aleatòria de 16 caràcters
+function generate_random_password {
+  echo "$(tr -dc 'A-Za-z0-9?¿¡!@#$%^&*()_+=-' < /dev/urandom | head -c 16)"
+}
+
 # Funció per demanar dades obligatòries amb o sense valor per defecte
 function prompt_required {
   local prompt_text=$1
   local default_value=$2
 
-  # Si hi ha un valor per defecte, mostrar-lo en groc abans del read
+  # Si hi ha un valor per defecte, mostrar-lo en groc
   if [ -z "$default_value" ]; then
     read -p "$prompt_text: " input_value
   else
-    printf "$prompt_text: \e[33m($default_value)\e[0m "
-    read input_value
+    read -p "$prompt_text: \e[33m($default_value)\e[0m " input_value
   fi
 
   echo ${input_value:-$default_value}
@@ -20,20 +26,17 @@ function prompt_required {
 function prompt_yes_no {
   local prompt_text=$1
   local default_value=$2
-
-  printf "$prompt_text (s/n): \e[33m($default_value)\e[0m "
-  read input_value
+  read -p "$prompt_text (s/n): \e[33m($default_value)\e[0m " input_value
   input_value=${input_value:-$default_value}
-
   while [[ ! "$input_value" =~ ^[sSnN]$ ]]; do
-    printf "$prompt_text (s/n): \e[33m($default_value)\e[0m "
-    read input_value
+    read -p "$prompt_text (s/n): \e[33m($default_value)\e[0m " input_value
     input_value=${input_value:-$default_value}
   done
-
   echo "$input_value"
 }
 
+# Demanar el nom de la instància abans de tot
+echo -e "\e[1m\e[34mIntroduïu les dades del vostre Odoo\e[0m"
 # Demanar el nom de la instància abans de tot
 echo -e "\e[1m\e[34mIntroduïu les dades del vostre Odoo\e[0m"
 echo 
