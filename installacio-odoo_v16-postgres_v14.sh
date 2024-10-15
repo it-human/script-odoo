@@ -398,7 +398,7 @@ sudo rm -f /home/ubuntu/*.deb
 sudo rm -f /home/ubuntu/*.deb.*
 # Esborrar l'script d'instal·lació i arxius associats
 sudo rm -f /home/ubuntu/installacio-odoo_v16-postgres_v14.sh
-sudo rm -f /.wget-hsts
+sudo rm -f /home/ubuntu/.wget-hsts
 # Netejar la cache d'apt
 sudo apt-get clean
 # Eliminar paquets innecessaris
