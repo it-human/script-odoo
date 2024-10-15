@@ -104,7 +104,7 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
    - A partir d'aquest moment, la teva instància creada utilitzarà aquesta clau SSH per autenticar-se.
 <br><br>
 
-## 🛠️ Connectar-te a la instància via SSH
+## 🛠️ Connectar-te a la instància Odoo via SSH des del terminal:
 
 ### 🔢 1️⃣ **Obrir una terminal:**
    - A la terminal del teu ordinador, utilitza el següent comandament per connectar-te a la instància d'Ubuntu:
