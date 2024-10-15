@@ -109,15 +109,15 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
 ### 🔢 1️⃣ **Obrir una terminal:**
    - A la terminal del teu ordinador, utilitza el següent comandament per connectar-te a la instància d'Ubuntu:
      ```bash
-     ssh -i /path/a/la/teva/clau_privada.pem ubuntu@<IP_ESTÀTICA>
+     ssh -i ./path/a/la/teva/clau_privada.pem ubuntu@<IP_ESTÀTICA>
      ```
 
-   - Substitueix `/path/a/la/teva/clau_privada.pem` pel camí a la teva clau SSH privada generada anteriorment, i substitueix `<IP_ESTÀTICA>` per l'adreça IP estàtica assignada a la teva instància.
+   - Substitueix `./path/a/la/teva/clau_privada.pem` pel camí a la teva clau SSH privada generada anteriorment, i substitueix `<IP_ESTÀTICA>` per l'adreça IP estàtica assignada a la teva instància.
 
 ### 🔢 2️⃣ **Permisos de la clau privada:**
    - Si trobes un error de permisos amb la clau privada, assegura't que només el propietari pugui llegir-la:
      ```bash
-     chmod 400 /path/a/la/teva/clau_privada.pem
+     chmod 400 ./path/a/la/teva/clau_privada.pem
      ```
 <br>
 
@@ -131,11 +131,11 @@ configuració de seguretat, Nginx, selecció de mòduls d'Odoo, i opcionalment m
 ### 🔢 2️⃣ **Connectar via SSH**:
    - Executa el següent comando per connectar-te a la teva instància Odoo:
      ```bash
-     ssh -i /path/al/teu/arxiu.pem ubuntu@<IP_INSTÀNCIA>
+     ssh -i ./path/al/teu/arxiu.pem ubuntu@<IP_INSTÀNCIA>
      ```
    - Assegura't de donar permisos adequats al fitxer `.pem` abans de connectar:
      ```bash
-     chmod 400 /path/al/teu/arxiu.pem
+     chmod 400 ./path/al/teu/arxiu.pem
      ```
 <br>
 
