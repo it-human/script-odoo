@@ -230,6 +230,20 @@ echo
 echo -e "\e[1m\e[34mActualitzant el servidor...\e[0m"
 sudo apt update -y && sudo apt upgrade -y
 
+# Configurar swap per augmentar la memòria
+echo  
+echo -e "\e[1m\e[34mConfigurant memòria swap...\e[0m"
+if [ ! -f /swapfile ]; then
+    sudo fallocate -l 2G /swapfile   # Això crea un arxiu de 2 GB per swap
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab  # Assegurar que swap s'afegeixi després de reiniciar
+    echo "Memòria swap de 2GB creada i activada."
+else
+    echo "Memòria swap ja existeix. No s'ha creat nova swap."
+fi
+
 # Instal·lació de seguretat SSH i Fail2ban
 echo  
 echo -e "\e[1m\e[34mInstal·lant seguretat SSH i Fail2ban...\e[0m"
