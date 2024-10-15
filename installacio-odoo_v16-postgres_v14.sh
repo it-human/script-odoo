@@ -36,6 +36,7 @@ function prompt_yes_no {
 }
 
 # Demanar el nom de la instància abans de tot
+echo
 echo -e "\e[1m\e[34mIntroduïu les dades del vostre Odoo\e[0m"
 echo 
 instance_name=$(prompt_required "Introdueix el nom de la instància de Lightsail")
@@ -223,36 +224,36 @@ if [[ $confirm != "s" ]]; then
 fi
 
 # Actualitzar el servidor
-echo
+echo  
 echo -e "\e[1m\e[34mActualitzant el servidor...\e[0m"
 sudo apt update -y && sudo apt upgrade -y
 
 # Instal·lació de seguretat SSH i Fail2ban
-echo
+echo  
 echo -e "\e[1m\e[34mInstal·lant seguretat SSH i Fail2ban...\e[0m"
 sudo apt-get install openssh-server fail2ban -y
 
 # Instal·lació de llibreries necessàries
-echo
+echo  
 echo -e "\e[1m\e[34mInstal·lant llibreries necessàries...\e[0m"
 sudo apt install vim curl wget gpg git gnupg2 software-properties-common apt-transport-https lsb-release ca-certificates -y
 sudo apt install build-essential wget git python3 python3-pip python3-dev python3-venv python3-wheel libfreetype6-dev libxml2-dev libzip-dev libsasl2-dev python3-setuptools libjpeg-dev zlib1g-dev libpq-dev libxslt1-dev libldap2-dev libtiff5-dev libopenjp2-7-dev -y
 
 # Instal·lació de Node.js i NPM
-echo
+echo  
 echo -e "\e[1m\e[34mInstal·lant Node.js i NPM...\e[0m"
 sudo apt install nodejs npm node-less xfonts-75dpi xfonts-base fontconfig -y
 sudo npm install -g rtlcss
 
 # Instal·lació de Wkhtmltopdf
-echo
+echo  
 echo -e "\e[1m\e[34mInstal·lant Wkhtmltopdf...\e[0m"
 wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
 sudo dpkg -i wkhtmltox_0.12.6.1-2.jammy_amd64.deb
 sudo apt-get install -f -y
 
 # Instal·lació de PostgreSQL 14
-echo
+echo  
 echo -e "\e[1m\e[34mInstal·lant PostgreSQL 14...\e[0m"
 curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
 echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
@@ -260,30 +261,30 @@ sudo apt update
 sudo apt -y install postgresql-14 postgresql-client-14
 
 # Creació de la base de dades i usuari PostgreSQL per Odoo
-echo
+echo  
 echo -e "\e[1m\e[34mCreant base de dades i usuari PostgreSQL per Odoo...\e[0m"
 sudo su - postgres -c "psql -c \"CREATE DATABASE $db_name;\""
 sudo su - postgres -c "createuser -p 5432 -s $db_user"
 sudo su - postgres -c "psql -c \"ALTER USER $db_user WITH PASSWORD '$db_password';\""
 
 # Configurar autenticació PostgreSQL
-echo
+echo  
 echo -e "\e[1m\e[34mConfigurant autenticació PostgreSQL...\e[0m"
 sudo bash -c "echo 'local   all             all                                     md5' >> /etc/postgresql/14/main/pg_hba.conf"
 sudo systemctl restart postgresql
 
 # Creació de l'usuari Odoo
-echo
+echo  
 echo -e "\e[1m\e[34mCreant usuari Odoo al sistema...\e[0m"
 sudo adduser --system --group --home=/opt/odoo --shell=/bin/bash odoo
 
 # Clonar el repositori Odoo 16
-echo
+echo  
 echo -e "\e[1m\e[34mClonant el repositori Odoo 16...\e[0m"
 sudo su - odoo -c "git clone https://github.com/odoo/odoo.git --depth 1 --branch 16.0 --single-branch /opt/odoo/odoo-server"
 
 # Crear entorn virtual de Python
-echo
+echo  
 echo -e "\e[1m\e[34mCreant entorn virtual de Python...\e[0m"
 sudo su - odoo -c "python3 -m venv /opt/odoo/odoo-server/venv"
 sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/pip install wheel"
@@ -314,7 +315,7 @@ install_selected_modules "${selected_default_modules[@]}"
 install_selected_modules "${selected_server_tools[@]}"
 
 # Crear directori de logs
-echo
+echo  
 echo -e "\e[1m\e[34mCreant directori de logs...\e[0m"
 sudo mkdir /var/log/odoo
 sudo touch /var/log/odoo/odoo-server.log
@@ -322,7 +323,7 @@ sudo chown odoo:odoo /var/log/odoo -R
 sudo chmod 777 /var/log/odoo
 
 # Crear fitxer de configuració d'Odoo
-echo
+echo  
 echo -e "\e[1m\e[34mCreant fitxer de configuració d'Odoo...\e[0m"
 sudo bash -c "cat > /etc/odoo.conf" <<EOL
 [options]
@@ -347,7 +348,7 @@ EOL
 sudo chown odoo:odoo /etc/odoo.conf
 
 # Crear servei d'Odoo
-echo
+echo  
 echo -e "\e[1m\e[34mCreant servei d'Odoo...\e[0m"
 sudo bash -c "cat > /etc/systemd/system/odoo-server.service" <<EOL
 [Unit]
@@ -369,19 +370,19 @@ WantedBy=multi-user.target
 EOL
 
 # Iniciar i habilitar el servei
-echo
+echo  
 echo -e "\e[1m\e[34mIniciant i habilitant el servei d'Odoo...\e[0m"
 sudo systemctl daemon-reload
 sudo systemctl start odoo-server
 sudo systemctl enable odoo-server
 
 # Instal·lació de Nginx
-echo
+echo  
 echo -e "\e[1m\e[34mInstal·lant Nginx...\e[0m"
 sudo apt install nginx -y
 
 # Configuració de Nginx
-echo
+echo  
 echo -e "\e[1m\e[34mConfigurant Nginx per Odoo...\e[0m"
 sudo bash -c "cat > /etc/nginx/sites-available/$custom_domain" <<EOL
 upstream odoo16 {
@@ -406,13 +407,13 @@ server {
 EOL
 
 # Activar configuració Nginx
-echo
+echo  
 echo -e "\e[1m\e[34mActivant configuració Nginx...\e[0m"
 sudo ln -s /etc/nginx/sites-available/$custom_domain /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 
-echo
+echo  
 echo -e "\e[1m\e[34mEliminant arxius d'instal·lació...\e[0m"
 # Esborrar els fitxers .deb baixats
 sudo rm -f /home/ubuntu/*.deb
@@ -426,7 +427,7 @@ sudo apt-get clean
 sudo apt-get autoremove -y
 # Opcional: esborrar logs antics (si n'hi ha)
 sudo rm -f /var/log/odoo/*.log
-echo 
+echo  
 echo "Fitxers temporals eliminats."
 
 # Mostrar els valors seleccionats
@@ -449,5 +450,5 @@ function mostrar_valors {
 }
 
 mostrar_valors
-echo
+echo  
 echo "Accedeix a Odoo mitjançant el domini: https://$custom_domain o https://$static_ip:8069"
