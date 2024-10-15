@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Funció per generar una contrasenya aleatòria de 16 caràcters
-function generate_random_password {
-  echo "$(tr -dc 'A-Za-z0-9?¿¡!@#$%^&*()_+=-' < /dev/urandom | head -c 16)"
-}
-
 # Funció per demanar dades obligatòries amb o sense valor per defecte
 function prompt_required {
   local prompt_text=$1
@@ -14,8 +9,8 @@ function prompt_required {
   if [ -z "$default_value" ]; then
     read -p "$prompt_text: " input_value
   else
-    echo -e "$prompt_text: \e[33m($default_value)\e[0m"
-    read -p " " input_value
+    printf "$prompt_text: \e[33m($default_value)\e[0m "
+    read input_value
   fi
 
   echo ${input_value:-$default_value}
@@ -26,13 +21,13 @@ function prompt_yes_no {
   local prompt_text=$1
   local default_value=$2
 
-  echo -e "$prompt_text (s/n): \e[33m($default_value)\e[0m"
-  read -p " " input_value
+  printf "$prompt_text (s/n): \e[33m($default_value)\e[0m "
+  read input_value
   input_value=${input_value:-$default_value}
 
   while [[ ! "$input_value" =~ ^[sSnN]$ ]]; do
-    echo -e "$prompt_text (s/n): \e[33m($default_value)\e[0m"
-    read -p " " input_value
+    printf "$prompt_text (s/n): \e[33m($default_value)\e[0m "
+    read input_value
     input_value=${input_value:-$default_value}
   done
 
