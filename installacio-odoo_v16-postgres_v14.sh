@@ -280,6 +280,12 @@ echo
 echo -e "\e[1m\e[34mCreant usuari Odoo al sistema...\e[0m"
 sudo adduser --system --group --home=/opt/odoo --shell=/bin/bash odoo
 
+# Creació del rol Odoo a PostgreSQL utilitzant la contrasenya de la variable $db_password
+echo  
+echo -e "\e[1m\e[34mCreant rol d'Odoo a PostgreSQL...\e[0m"
+sudo su - postgres -c "psql -c \"CREATE ROLE odoo WITH LOGIN PASSWORD '$db_password';\""
+sudo su - postgres -c "psql -c \"ALTER ROLE odoo CREATEDB;\""
+
 # Clonar el repositori Odoo 16
 echo  
 echo -e "\e[1m\e[34mClonant el repositori Odoo 16...\e[0m"
