@@ -174,11 +174,13 @@ else
 fi
 
 # Confirmació final dels mòduls seleccionats
+echo  
 echo -e "\e[1m\e[34mMòduls seleccionats per a la instal·lació:\e[0m"
 for module in "${selected_default_modules[@]}"; do
   echo "- $module"
 done
 
+echo  
 echo -e "\e[1m\e[34mServer Tools seleccionats per a la instal·lació:\e[0m"
 for tool in "${selected_server_tools[@]}"; do
   echo "- $tool"
