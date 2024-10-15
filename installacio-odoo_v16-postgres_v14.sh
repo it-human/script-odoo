@@ -295,7 +295,7 @@ sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/pip install -r /opt/odoo/odoo-
 # Funció per instal·lar mòduls seleccionats a la base de dades
 install_selected_modules() {
   local modules_to_install=("$@")
-  
+  echo  
   echo -e "\e[1m\e[34mInstal·lant mòduls seleccionats...\e[0m"
   
   for module in "${modules_to_install[@]}"; do
