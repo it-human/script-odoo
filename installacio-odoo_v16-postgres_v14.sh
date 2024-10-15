@@ -37,8 +37,6 @@ function prompt_yes_no {
 
 # Demanar el nom de la instància abans de tot
 echo -e "\e[1m\e[34mIntroduïu les dades del vostre Odoo\e[0m"
-# Demanar el nom de la instància abans de tot
-echo -e "\e[1m\e[34mIntroduïu les dades del vostre Odoo\e[0m"
 echo 
 instance_name=$(prompt_required "Introdueix el nom de la instància de Lightsail")
 
