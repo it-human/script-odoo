@@ -308,6 +308,7 @@ check_and_delete_db "$db_name"
 check_and_delete_user "$db_user"
 
 # Creació de la base de dades i usuari PostgreSQL per Odoo
+echo  
 echo -e "\e[1m\e[34mCreant nova base de dades i usuari PostgreSQL per Odoo...\e[0m"
 sudo su - postgres -c "psql -c \"CREATE DATABASE $db_name;\""
 sudo su - postgres -c "createuser -p 5432 -s $db_user"
