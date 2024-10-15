@@ -5,20 +5,27 @@ function generate_random_password {
   echo "$(tr -dc 'A-Za-z0-9?¿¡!@#$%^&*()_+=-' < /dev/urandom | head -c 16)"
 }
 
-# Funció per demanar dades obligatòries amb o sense valor per defecte
-function prompt_required {
-  local prompt_text=$1
-  local default_value=$2
-
-  # Si hi ha un valor per defecte, mostrar-lo
-  if [ -z "$default_value" ]; then
-    read -p "$prompt_text: " input_value
-  else
-    read -p "$prompt_text: ($default_value) " input_value
-  fi
-
-  echo ${input_value:-$default_value}
+# Funció per instal·lar mòduls seleccionats a la base de dades
+install_selected_modules() {
+  local modules_to_install=("$@")
+  
+  echo -e "\e[1m\e[34mInstal·lant mòduls seleccionats...\e[0m"
+  
+  for module in "${modules_to_install[@]}"; do
+    echo -e "\e[1mInstal·lant el mòdul: $module\e[0m"
+    
+    # Executar la comanda per instal·lar el mòdul en la base de dades especificada
+    sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/python3 /opt/odoo/odoo-server/odoo-bin -d $db_name -i $module --stop-after-init"
+    
+    # Verificar si la instal·lació ha estat correcta
+    if [ $? -eq 0 ]; then
+      echo -e "\e[32mMòdul $module instal·lat correctament.\e[0m"
+    else
+      echo -e "\e[31mError: No s'ha pogut instal·lar el mòdul $module.\e[0m"
+    fi
+  done
 }
+
 
 # Funció per demanar dades amb validació "s/n", amb resposta per defecte a "s"
 function prompt_yes_no {
