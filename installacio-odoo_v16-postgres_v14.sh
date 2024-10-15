@@ -276,38 +276,29 @@ sudo su - odoo -c "python3 -m venv /opt/odoo/odoo-server/venv"
 sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/pip install wheel"
 sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/pip install -r /opt/odoo/odoo-server/requirements.txt"
 
-# Funció per gestionar la instal·lació de mòduls o server tools
-install_module() {
-  local name=$1
-  local source_dir=$2
-  local dest_dir=$3
-  local type=$4
-
-  sudo mkdir -p "$dest_dir/$name"
-
-  if [ ! -d "$dest_dir/$name" ]; then
-    echo "Error: No s'ha pogut crear la carpeta per al $type $name."
-  elif [ ! -d "$source_dir/$name" ] || [ ! "$(ls -A "$source_dir/$name")" ]; then
-    echo "Error: No s'han trobat arxius per al $type $name a la carpeta d'origen."
-  else
-    sudo cp -r "$source_dir/$name/"* "$dest_dir/$name/"
-    if [ ! "$(ls -A "$dest_dir/$name")" ]; then
-      echo "Error: No s'han pogut copiar els arxius per al $type $name."
+# Funció per instal·lar mòduls seleccionats a la base de dades
+install_selected_modules() {
+  local modules_to_install=("$@")
+  
+  echo -e "\e[1m\e[34mInstal·lant mòduls seleccionats...\e[0m"
+  
+  for module in "${modules_to_install[@]}"; do
+    echo -e "\e[1mInstal·lant el mòdul: $module\e[0m"
+    sudo su - odoo -c "/opt/odoo/odoo-server/venv/bin/python3 /opt/odoo/odoo-server/odoo-bin -d $db_name -i $module --stop-after-init"
+    
+    if [ $? -eq 0 ]; then
+      echo -e "\e[32mMòdul $module instal·lat correctament.\e[0m"
     else
-      echo "$type $name instal·lat correctament."
+      echo -e "\e[31mError: No s'ha pogut instal·lar el mòdul $module.\e[0m"
     fi
-  fi
+  done
 }
 
-# Instal·lació dels mòduls
-for module in "${selected_default_modules[@]}"; do
-  install_module "$module" "/opt/odoo/odoo-server/odoo/addons" "/opt/odoo/odoo-server/addons" "Mòdul"
-done
+# Instal·lar mòduls seleccionats
+install_selected_modules "${selected_default_modules[@]}"
 
-# Instal·lació dels Server Tools
-for tool in "${selected_server_tools[@]}"; do
-  install_module "$tool" "/opt/odoo/odoo-server/odoo/server-tools" "/opt/odoo/odoo-server/server-tools" "Server Tool"
-done
+# Instal·lar Server Tools seleccionats
+install_selected_modules "${selected_server_tools[@]}"
 
 # Crear directori de logs
 echo -e "\e[1m\e[34mCreant directori de logs...\e[0m"
